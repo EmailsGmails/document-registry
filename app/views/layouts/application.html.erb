@@ -7,10 +7,17 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag 'application', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' %>
   </head>
 
   <body>
     <%= yield %>
+    <% if user_signed_in? %>
+      <%= form_tag(destroy_user_session_path, method: :delete) do %>
+        <%= submit_tag 'Logout' %>
+      <% end %>
+    <% end %>
   </body>
 </html>
