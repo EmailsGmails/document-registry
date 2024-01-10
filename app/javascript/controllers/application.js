@@ -1,4 +1,6 @@
 import { Application } from "@hotwired/stimulus"
+import { updateFileLabel } from 'controllers/custom';
+
 
 const application = Application.start()
 

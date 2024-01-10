@@ -1,0 +1,25 @@
+<h1 class="mb-4">Jauns dokuments</h1>
+
+<%= form_with(model: @document, url: '/documents', method: :post, local: true, multipart: true, remote: true) do |form| %>
+  <div class="form-group">
+    <%= form.label :title, class: 'mb-0' %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :content, class: 'mb-0' %>
+    <%= form.text_area :content, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <label for="document_files" class="custom-file-label">Izvēlēties failus</label>
+    <%= form.file_field :documents, multiple: true, class: 'form-control-file', id: 'document_files', onchange: 'updateFileLabel(this)' %>
+    <div id="selected-files"></div>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit 'Izveidot dokumentu', class: 'btn btn-primary', data: { disable_with: 'Creating...' } %>
+  </div>
+<% end %>
+
+<%= link_to 'Atpakaļ', documents_path, class: 'btn btn-secondary' %>

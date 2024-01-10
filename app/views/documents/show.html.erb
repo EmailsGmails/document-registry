@@ -1,0 +1,52 @@
+<div class="document-details">
+  <h1><%= @document.title %></h1>
+  <p><%= @document.content %></p>
+  <% if @document.documents.present? %>
+    <h5>Augšupielādētie dokumenti:</h5>
+    <ul>
+      <% @document.documents.each do |document| %>
+        <li><%= link_to document.identifier, document.url, target: '_blank', download: document.identifier %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <p>Izveidots: <%= @document.created_at %></p>
+
+  <%= link_to 'Labot', edit_document_path(@document), class: 'btn btn-primary' %>
+  <%= link_to 'Dzēst', document_path(@document), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', id: 'delete-button'  %>
+  <%= link_to 'Pie pārējiem dokumentiem', documents_path, class: 'btn btn-secondary' %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteButton = document.getElementById('delete-button');
+
+    if (deleteButton) {
+      deleteButton.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const confirmation = confirm('Vai tiešām vēlies dzēst dokumentu?');
+
+        if (confirmation) {
+          deleteDocument(deleteButton.href);
+        }
+      });
+    }
+
+    function deleteDocument(url) {
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the success response, e.g., redirect to index view
+        window.location.href = '/documents';
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  });
+</script>

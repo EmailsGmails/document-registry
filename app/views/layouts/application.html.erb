@@ -5,19 +5,38 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= javascript_include_tag 'application', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' %>
+    <%= javascript_include_tag 'https://code.jquery.com/jquery-3.6.0.min.js' %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag 'application', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' %>
     <%= javascript_importmap_tags %>
-    <%= javascript_include_tag 'application', 'https://code.jquery.com/jquery-3.3.1.slim.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' %>
   </head>
+  <script>
+    function updateFileLabel(input) {
+      const selectedFilesDiv = document.getElementById('selected-files');
+      const files = input.files;
+
+      if (files.length === 0) {
+        selectedFilesDiv.innerHTML = '';
+      } else {
+        selectedFilesDiv.innerHTML = '<ul>';
+        for (let i = 0; i < files.length; i++) {
+          selectedFilesDiv.innerHTML += `<li>${files[i].name}</li>`;
+        }
+        selectedFilesDiv.innerHTML += '</ul>';
+      }
+    }
+  </script>
 
   <body>
-    <%= yield %>
-    <% if user_signed_in? %>
-      <%= form_tag(destroy_user_session_path, method: :delete) do %>
-        <%= submit_tag 'Logout' %>
+    <div class="container mt-5">
+      <%= yield %>
+      <% if user_signed_in? %>
+        <%= form_tag(destroy_user_session_path, method: :delete) do %>
+          <%= submit_tag 'Log out', class: 'btn btn-logout' %>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
   </body>
 </html>
